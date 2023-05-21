@@ -1,7 +1,10 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 ACRES_PER_HECTARE = 2.471
+totals = {}
 
 
 def one():
@@ -10,7 +13,8 @@ def one():
     for year in range(61, 82 + 1):
         dfYear = df[df["YEAR"] == year]
         sum = dfYear["TOTAL"].sum()
-        print(f"19{year}\t{int(sum)}")
+        # print(f"19{year}\t{int(sum)}")
+        totals[1900 + year] = int(sum)
 
 
 def two():
@@ -19,7 +23,8 @@ def two():
     for year in range(1983, 1995 + 1):
         dfYear = df[df["fire_year"] == year]
         sum = dfYear["extingsize"].sum() * ACRES_PER_HECTARE
-        print(f"{year}\t{int(sum)}")
+        # print(f"{year}\t{int(sum)}")
+        totals[year] = int(sum)
 
 
 # THIS ONE HAS PROBLEMS IN THE DATA DICTIONARY
@@ -30,7 +35,8 @@ def three():
     for year in years:
         dfYear = df[df["fire_year"] == year]
         sum = dfYear["current_size"].sum() * ACRES_PER_HECTARE
-        print(f"{year}\t{int(sum)}")
+        # print(f"{year}\t{int(sum)}")
+        totals[year] = int(sum)
 
 
 def four():
@@ -44,10 +50,17 @@ def four():
     for year in years:
         dfYear = df[df["fire_year"] == year]
         sum = dfYear["current_size"].sum() * ACRES_PER_HECTARE
-        print(f"{year}\t{int(sum)}")
+        # print(f"{year}\t{int(sum)}")
+        totals[year] = int(sum)
 
 
 one()
 two()
 three()
 four()
+totalsDF = pd.DataFrame.from_dict(totals, orient="index", columns=["Acres"])
+
+print(totalsDF)
+
+chart = totalsDF.plot.bar()
+plt.show()
